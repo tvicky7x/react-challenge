@@ -1,5 +1,3 @@
-import React from "react";
-
 function Form(props) {
   function submitForm(e) {
     e.preventDefault();
@@ -7,6 +5,7 @@ function Form(props) {
     let age = document.getElementById("age").value;
     let data = { name: name, age: age };
     props.onSubmit(data);
+    e.target.reset();
   }
   return (
     <div className="card card-body mt-3">
