@@ -29,7 +29,7 @@ function App() {
   }
 
   return (
-    <div>
+    <>
       <div className={`container text-center ${styles.size}`}>
         <Form onSubmit={dataProcess}></Form>
         {user.length !== 0 && (
@@ -45,7 +45,7 @@ function App() {
       {Error && (
         <Modal onClick={closeModal} MassageIndex={MassageIndex}></Modal>
       )}
-    </div>
+    </>
   );
 }
 
