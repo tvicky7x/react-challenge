@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import Form from "./Components/Form";
+import { useState } from "react";
+import ListContainer from "./Components/ListContainer";
+import List from "./Components/List";
+import styles from "./app.module.css";
 
 function App() {
+  const [user, setUser] = useState([]);
+  function dataProcess(data) {
+    setUser([...user, data]);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className={`container text-center ${styles.size}`}>
+        <Form onSubmit={dataProcess}></Form>
+        <ListContainer>
+          {user.length !== 0 &&
+            user.map((item) => {
+              return <List name={item.name} age={item.age}></List>;
+            })}
+        </ListContainer>
+      </div>
     </div>
   );
 }
