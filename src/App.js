@@ -1,50 +1,49 @@
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Form from "./Components/Form";
+import Form from "./Components/Form/Form";
+import List from "./Components/List/List";
 import { useState } from "react";
-import ListContainer from "./Components/ListContainer";
-import List from "./Components/List";
-import styles from "./app.module.css";
-import Modal from "./Components/Modal";
+import ModalBox from "./Components/Modal/ModalBox";
 
 function App() {
-  const [user, setUser] = useState([]);
-  const [Error, setError] = useState(false);
-  const [MassageIndex, setMassageIndex] = useState(0);
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(false);
+  function submitData(data) {
+    if (data.name.trim().length === 0 || data.age.trim().length === 0) {
+      console.log("hello");
+      setError({ title: "Invalid Input", massage: "Please add valid input." });
+      return;
+    } else {
+      if (Number(data.age) < 1) {
+        setError({
+          title: "Invalid Age",
+          massage: "Please add age above 1 years.",
+        });
+        return;
+      }
+    }
+    setData((previousData) => {
+      return [...previousData, data];
+    });
+  }
+
   function closeModal() {
     setError(false);
-  }
-  function dataProcess(data) {
-    if (data.name.trim() === "" || data.age === "") {
-      setMassageIndex(0);
-      setError(true);
-      return;
-    }
-    if (Number(data.age) < 1) {
-      setMassageIndex(1);
-      setError(true);
-      return;
-    }
-    data.id = Math.floor(Math.random() * 1000000).toString(36);
-    setUser([...user, data]);
   }
 
   return (
     <>
-      <div className={`container text-center ${styles.size}`}>
-        <Form onSubmit={dataProcess}></Form>
-        {user.length !== 0 && (
-          <ListContainer>
-            {user.map((item) => {
-              return (
-                <List name={item.name} age={item.age} key={item.id}></List>
-              );
+      <div className="container p-3" style={{ maxWidth: "500px" }}>
+        <Form submitData={submitData} />
+        <div className="card mt-3 p-3">
+          <ul className="list-group">
+            {data.map((item) => {
+              return <List name={item.name} age={item.age} />;
             })}
-          </ListContainer>
-        )}
+          </ul>
+        </div>
+        {error && <ModalBox closeModal={closeModal} error={error} />}
       </div>
-      {Error && (
-        <Modal onClick={closeModal} MassageIndex={MassageIndex}></Modal>
-      )}
     </>
   );
 }
